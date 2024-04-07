@@ -3,78 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anglies Pėdsakų Skaičiuoklė</title>
+    <title>Anglies Pėdsako Skaičiuoklė</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Anglies Pėdsakų Skaičiuoklė</h1>
+    <h1 id="caption">Anglies Pėdsako Skaičiuoklė</h1>
     <div id="questionnaire">
         <div class="question" id="question1">
             <h3>Kiek kartų per savaitę naudojate automobilį?</h3>
-            <input type="radio" name="carUsage" value="1"> 0-4 kartą
-            <input type="radio" name="carUsage" value="2.5"> 5-9 kartus
-            <input type="radio" name="carUsage" value="3.5"> 10 ar daugiau kartų
-            <button id="nextButton1">Kitas</button>
+            <input type="radio" name="carUsage" value="1"> 0-4 kartą<br>
+            <input type="radio" name="carUsage" value="2.5"> 5-9 kartus<br>
+            <input type="radio" name="carUsage" value="3.5"> 10 ar daugiau kartų<br>
+            <button id="nextButton1">Toliau</button><br>
         </div>
         <div class="question" id="question2">
             <h3>Kiek dažnai vartojate mėsą arba pieno produktus?</h3>
-            <input type="radio" name="meatDairyConsumption" value="Kasdien keletą kartų"> Kasdien
-            <input type="radio" name="meatDairyConsumption" value="Kasdien kartą"> Kasdien kartą
-            <input type="radio" name="meatDairyConsumption" value="Keletą kartų per savaitę"> Keletą kartų per savaitę
-            <button id="nextButton2">Kitas</button>
+            <input type="radio" name="meatDairyConsumption" value="1.5"> Kasdien kelis kartus<br>
+            <input type="radio" name="meatDairyConsumption" value="1"> Kasdien<br>
+            <input type="radio" name="meatDairyConsumption" value="0.5"> Keletą kartų per savaitę<br>
+            <button id="nextButton2">Toliau</button><br>
         </div>
         <div class="question" id="question3">
             <h3>Kuris iš šių būdų keliauti yra mėgstamiausias?</h3>
-            <input type="radio" name="travelChoice" value="Automobilis"> Automobilis
-            <input type="radio" name="travelChoice" value="Lėktuvas"> Lėktuvas
-            <input type="radio" name="travelChoice" value="Dviratis"> Dviratis
-            <button id="nextButton3">Kitas</button>
+            <input type="radio" name="travelChoice" value="2"> Automobilis<br>
+            <input type="radio" name="travelChoice" value="1.5"> Lėktuvas<br>
+            <input type="radio" name="travelChoice" value="0"> Dviratis<br>
+            <button id="nextButton3">Toliau</button><br>
         </div>
         <div class="question" id="question4">
             <h3>Kiek kartų per savaitę valgote vaisių ar daržovių iš užsienio?</h3>
-            <input type="radio" name="importedFoodConsumption" value="Kasdien"> Kasdien
-            <input type="radio" name="importedFoodConsumption" value="Keletą kartų per savaitę"> Keletą kartų per savaitę
-            <input type="radio" name="importedFoodConsumption" value="Retkarčiais ar niekada"> Retkarčiais ar niekada
-            <button id="nextButton4">Kitas</button>
+            <input type="radio" name="importedFoodConsumption" value="1"> Kasdien<br>
+            <input type="radio" name="importedFoodConsumption" value="0.5"> Keletą kartų per savaitę<br>
+            <input type="radio" name="importedFoodConsumption" value="0"> Retkarčiais ar niekada<br>
+            <button id="nextButton4">Toliau</button><br>
         </div>
         <div class="question" id="question5">
-            <h3>Kiek laiko per dieną paliečiate elektroninius įrenginius?</h3>
-            <input type="radio" name="screenTime" value="Mažiau nei valandą"> Mažiau nei valandą
-            <input type="radio" name="screenTime" value="1-3 valandas"> 1-3 valandas
-            <input type="radio" name="screenTime" value="Daugiau nei 3 valandas"> Daugiau nei 3 valandas
-            <button id="nextButton5">Kitas</button>
+            <h3>Kiek laiko per dieną naudojate elektroninius įrenginius?</h3>
+            <input type="radio" name="screenTime" value="0"> Mažiau nei valandą<br>
+            <input type="radio" name="screenTime" value="0.5"> 1-3 valandas<br>
+            <input type="radio" name="screenTime" value="1"> Daugiau nei 3 valandas<br>
+            <button id="nextButton5">Toliau</button><br>
         </div>
         <div class="question" id="question6">
             <h3>Koks yra jūsų mėgstamiausias laisvalaikio praleidimo būdas?</h3>
-            <input type="radio" name="leisureActivity" value="Sportas lauke"> Sportas lauke
-            <input type="radio" name="leisureActivity" value="Kompiuteriniai žaidimai"> Kompiuteriniai žaidimai
-            <input type="radio" name="leisureActivity" value="Skaitymas"> Skaitymas
-            <button id="nextButton6">Kitas</button>
+            <input type="radio" name="leisureActivity" value="0"> Sportas lauke<br>
+            <input type="radio" name="leisureActivity" value="0.5"> Kompiuteriniai žaidimai<br>
+            <input type="radio" name="leisureActivity" value="0"> Skaitymas<br>
+            <button id="nextButton6">Toliau</button><br>
         </div>
         <div class="question" id="question7">
             <h3>Kaip grįžtate namo iš mokyklos?</h3>
-            <input type="radio" name="schoolTransport" value="Pėsčiomis arba dviračiu"> Pėsčiomis arba dviračiu
-            <input type="radio" name="schoolTransport" value="Autobusu"> Autobusu
-            <input type="radio" name="schoolTransport" value="Automobiliu"> Tėvų automobiliu
-            <button id="nextButton7">Kitas</button>
+            <input type="radio" name="schoolTransport" value="0"> Pėsčiomis arba dviračiu<br>
+            <input type="radio" name="schoolTransport" value="0.5"> Autobusu<br>
+            <input type="radio" name="schoolTransport" value="1"> Tėvų automobiliu<br>
+            <button id="nextButton7">Toliau</button><br>
         </div>
         
         <div class="question" id="question8">
             <h3>Kokiu būdu šildote namus?</h3>
-            <input type="radio" name="homeHeating" value="Centrinis šildymas"> Centrinis šildymas
-            <input type="radio" name="homeHeating" value="Durpės ar mediena"> Durpės ar mediena
-            <input type="radio" name="homeHeating" value="Dujos"> Dujos
-            <input type="radio" name="homeHeating" value="Elektra"> Elektra
-            <button id="nextButton8">Kitas</button>
+            <input type="radio" name="homeHeating" value="0.5"> Centrinis šildymas<br>
+            <input type="radio" name="homeHeating" value="0"> Durpės ar mediena<br>
+            <input type="radio" name="homeHeating" value="1"> Dujos<br>
+            <input type="radio" name="homeHeating" value="0"> Elektra<br>
+            <button id="nextButton8">Toliau</button><br>
         </div>
         
 
         <div id="resultsModal" class="modal">
             <div class="modal-content">
                 <span class="closeButton">&times;</span>
-                <h2>Jūsų Anglies dioksido pėdsakas yra:</h2>
+                <h1>Rezultatai</h2>
                 <div id="resultsContent">
-                    <!-- Results will be dynamically inserted here -->
+                    <h2 id="results">Rezultatai</h2>
                 </div>
             </div>
         </div>
