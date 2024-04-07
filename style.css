@@ -1,61 +1,99 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+#caption {
+    margin:40px;
+    color:  #649635;
+    font-weight:bold;
+}
+
+#questionnaire {
+    background-color: #f2f2f2;
+    padding: 40px;
+    max-width: 800px;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
 .question {
-    display: none;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
 }
 
-#resultsWindow {
-    display: none;
+.question h3 {
+    margin-top: 0;
     text-align: left;
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    background-color: #fff;
 }
 
-/* Style for the modal */
+input[type="radio"] {
+    margin-bottom: 20px;
+    accent-color: #649635;
+    flex-direction: column;
+    margin-bottom: 10px;
+    transform: scale(1.5);
+}
+
+button {
+    background-color: #649635;
+    color: #fff;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #327836;
+}
+
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* Style for the modal content */
 .modal-content {
-    background-color: #fefefe;
+    background-color: #fff;
     margin: 15% auto;
-    padding: 20px;
+    padding: 40px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    position: relative;
+    width: 60%;
+    text-align: center;
 }
 
-/* Style for the close button */
 .closeButton {
-    color: #aaa;
+    color: #000;
     float: right;
     font-size: 28px;
     font-weight: bold;
-    cursor: pointer;
 }
 
 .closeButton:hover,
 .closeButton:focus {
-    color: black;
+    color: #333;
     text-decoration: none;
     cursor: pointer;
 }
 
+h1 {
+    text-align: center;
+}
