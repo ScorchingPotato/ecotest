@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const footprinttext = document.getElementById('footprint');
         resultheading.innerHTML = "Rezultatai"
         resulttext.innerHTML = response;
-        footprinttext.innerHTML = `~${totalscore} tonų anglies dioksido`
+        footprinttext.innerHTML = `~${totalscore/1000} tonų anglies dioksido`
         resulttext.style.color = response_color;
         footprinttext.style.color = response_color;
         modal.style.display = "block";
