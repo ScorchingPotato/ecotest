@@ -56,141 +56,246 @@
     }
     
     document.addEventListener("DOMContentLoaded", function() {
-    const questions = document.querySelectorAll('.question');
-    const totalQuestions = questions.length;
-    let currentQuestion = 0;
-    let totalscore = 0;
-    let submit = false;
-
-    function showQuestion(index) {
-        questions.forEach((question, i) => {
-            if (i === index) {
-                question.style.display = "block";
-            } else {
-                question.style.display = "none";
-            }
-        });
-    }
-
-    function nextQuestion() {
-        currentQuestion++;
-        if (currentQuestion < totalQuestions) {
-            showQuestion(currentQuestion);
-        } else {
-            showResults();
-        }
-    }   
-
-    function showResults() {
+        const questions = document.querySelectorAll('.question');
+        const totalQuestions = questions.length;
+        let currentQuestion = 0;
         let totalscore = 0;
-        const radioButtons = document.querySelectorAll('input[type="radio"]:checked');
-        radioButtons.forEach((radioButton) => {
-            totalscore += Number(radioButton.value);
-        });
-        const checkButtons = document.querySelectorAll('input[type="checkbox"]:checked');
-        checkButtons.forEach((checkButton) => {
-            totalscore += Number(checkButton.value);
-        });
+        let submit = false;
+        var questionresults = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0}
         const sliders = document.querySelectorAll('input[type="range"]');
         sliders.forEach((slider) => {
-            totalscore += Number(slider.value)*Number(slider.dataset.mult);
+            slider.value = 0;
         });
-    
-        let response = "";
-        let response_color = "000000";
-        console.log(totalscore,"tons")
 
-        if (submit===false) {
-            writeData(makeid(5),'any',totalscore)
-            submit = true;
-        }
-    
-        if (totalscore < 1500) {
-            response = "Tikras klimato aktyvistas!";
-            response_color = "#14b373";
-        } else if (totalscore < 4600) {
-            response = "Šaunuolis, tavo Co2 emisija yra mažesnė už vidutinio žmogaus";
-            response_color = "#4cb314";
-        } else if (totalscore < 5000) {
-            response = "Tavo Co2 emisija yra tokia pat kaip vidutinio žmogaus";
-            response_color = "#b0b017";
-        } else {
-            response = "Tavo Co2 emisija yra labai didelė lyginant su vidutiniu žmogumi";
-            response_color = "#a83116";
+        function showQuestion(index) {
+            questions.forEach((question, i) => {
+                if (i === index) {
+                    question.style.display = "block";
+                } else {
+                    question.style.display = "none";
+                }
+            });
         }
 
-    
-        const modal = document.getElementById('resultsModal');
-        const sourcesDiv = document.getElementById('sourcediv');
-        const resultheading = document.getElementById("resultheading");
-        const resulttext = document.getElementById('results');
-        const footprinttext = document.getElementById('footprint');
-        resultheading.innerHTML = "Rezultatai"
-        resulttext.innerHTML = response;
-        footprinttext.innerHTML = `~${totalscore} tonų anglies dioksido`
-        resulttext.style.color = response_color;
-        footprinttext.style.color = response_color;
-        modal.style.display = "block";
-        const closeButton = document.getElementsByClassName("closeButton")[0];
-
-        while(sourcesDiv.firstChild) { 
-            sourcesDiv.removeChild(sourcesDiv.firstChild); 
-        } 
-
-        closeButton.onclick = function() {
-            modal.style.display = "none";
-        }
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-                totalscore=0;
+        function nextQuestion() {
+            var isAnswered = false;
+            currentQuestion++;
+            if (currentQuestion < totalQuestions) {
+                const currentQuestionDiv = document.getElementById(`question${currentQuestion}`);
+                const radioButtons = currentQuestionDiv.querySelectorAll("input[type='radio']");
+                if (radioButtons.length === 0) {
+                    isAnswered = true;
+                } else {
+                    radioButtons.forEach((radioButton) => {
+                        if (radioButton.checked) {
+                            isAnswered = true;
+                        }
+                    });
+                }
+                if (isAnswered) {
+                    showQuestion(currentQuestion);
+                } else {
+                    alert("Please answer the question before moving on.");
+                }
+            } else {
+                showResults();
             }
         }
-    }
-    
 
-    // Attach event listeners to all "Next" buttons
-    for (let i = 1; i <= totalQuestions; i++) {
-        document.getElementById(`nextButton${i}`).addEventListener('click', nextQuestion);
-    }
+        function showResults() {
+            let totalscore = 0;
+            let Class = '';
 
-    // Show the first question initially
-    showQuestion(currentQuestion);
+            const radioButtons = document.querySelectorAll('input[type="radio"]:checked');
+            radioButtons.forEach((radioButton) => {
+                totalscore += Number(radioButton.value);
+                questionresults[`${radioButton.name}`] = Number(radioButton.value)
+            });
+            const checkButtons = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkButtons.forEach((checkButton) => {
+                totalscore += Number(checkButton.value);
+                questionresults[`${checkButton.name}`] += Number(checkButton.value)
+            });
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach((slider) => {
+                totalscore += Number(slider.value)*Number(slider.dataset.mult);
+                questionresults[`${slider.name}`] = Number(slider.value)*Number(slider.dataset.mult)
+            });
+            var selectElement = document.querySelector('#classSelectNum');
+            var selectedOptions = Array.from(selectElement.options).filter(option => option.selected);
+            selectedOptions.forEach(option => {
+                if(option.text!='-'){Class += option.text};
+            });
+            var selectElement = document.querySelector('#classSelectLet');
+            var selectedOptions = Array.from(selectElement.options).filter(option => option.selected);
+            selectedOptions.forEach(option => {
+                if(option.text!='-'){Class += option.text};
+            });
+            if(Class.length<2){Class='?'}
+        
+            let response = "";
+            let response_color = "000000";
 
-    let sourceopen = false;
-    function showSources() {
-        const resultheading = document.getElementById("resultheading");
-        const resulttext = document.getElementById('results');
-        const footprinttext = document.getElementById('footprint');
-        const sourceDiv = document.getElementById('sourcediv');
-        resultheading.innerHTML = "Šaltiniai"
-        resulttext.innerHTML = ''
-        footprinttext.innerHTML = ''
-        var link1 = document.createElement("a");
-        link1.href = "https://www.carbonfootprint.com/energyconsumption.html"; link1.innerHTML = "Namų prietaisų Co2 pėdsako lentelė <br>"
-        var link2 = document.createElement("a");
-        link2.href = "https://skoot.eco/articles/carbon-footprint-of-everyday-things"; link2.innerHTML = "Kasdienybės Co2 pėdskas, straipsnis <br>"
-        var link3 = document.createElement("a");
-        link3.href = "https://createfashionbrand.com/carbon-footprint/"; link3.innerHTML = "Tekstilės Co2 pėdskas, straipsnis <br>"
-        var link4 = document.createElement("a");
-        link4.href = "https://www.worldometers.info/co2-emissions/co2-emissions-by-country/"; link4.innerHTML = "Planetos Co2 emisijų statistika <br>"
-        sourceDiv.appendChild(link1);
-        sourceDiv.appendChild(link2);
-        sourceDiv.appendChild(link3);
-        sourceDiv.appendChild(link4);
-    };
+            if (submit===false) {
+                writeData(makeid(5),Class,totalscore)
+                submit = true;
+            }
+        
+            if (totalscore < 1500) {
+                response = "Tikras klimato aktyvistas!";
+                response_color = "#14b373";
+            } else if (totalscore < 4600) {
+                response = "Šaunuolis, tavo Co2 emisija yra mažesnė už vidutinio žmogaus";
+                response_color = "#4cb314";
+            } else if (totalscore < 5000) {
+                response = "Tavo Co2 emisija yra tokia pat kaip vidutinio žmogaus";
+                response_color = "#b0b017";
+            } else {
+                response = "Tavo Co2 emisija yra labai didelė lyginant su vidutiniu žmogumi";
+                response_color = "#a83116";
+            }
 
-    const sourcesbutton = document.getElementById('sources')
-    sourcesbutton.addEventListener('click', () => {
-        if (!sourceopen){
-            showSources();
-            sourceopen = true;
-        } else{
-            showResults();
-            sourceopen = false;
+        
+            const modal = document.getElementById('resultsModal');
+            const sourcesDiv = document.getElementById('review');
+            const reviewDiv = document.getElementById('sourcediv');
+            const resultheading = document.getElementById("resultheading");
+            const resulttext = document.getElementById('results');
+            const footprinttext = document.getElementById('footprint');
+            resultheading.innerHTML = "Rezultatai"
+            resulttext.innerHTML = response;
+            footprinttext.innerHTML = `~${totalscore} tonų anglies dioksido`
+            resulttext.style.color = response_color;
+            footprinttext.style.color = response_color;
+            modal.style.display = "block";
+            const closeButton = document.getElementsByClassName("closeButton")[0];
+
+            while(sourcesDiv.firstChild) { 
+                sourcesDiv.removeChild(sourcesDiv.firstChild); 
+            }
+            while(reviewDiv.firstChild) { 
+                reviewDiv.removeChild(reviewDiv.firstChild); 
+            } 
+
+            closeButton.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                    totalscore=0;
+                }
+            }
         }
         
-    })
+
+        // Attach event listeners to all "Next" buttons
+        for (let i = 1; i <= totalQuestions; i++) {
+            document.getElementById(`nextButton${i}`).addEventListener('click', nextQuestion);
+        }
+
+        // Show the first question initially
+        showQuestion(currentQuestion);
+
+        let sourceopen = false;
+        function showSources() {
+            const reviewDiv = document.getElementById('sourcediv');
+            while(reviewDiv.firstChild) { 
+                reviewDiv.removeChild(reviewDiv.firstChild); 
+            } 
+            const resultheading = document.getElementById("resultheading");
+            const resulttext = document.getElementById('results');
+            const footprinttext = document.getElementById('footprint');
+            const sourceDiv = document.getElementById('sourcediv');
+            resultheading.innerHTML = "Šaltiniai"
+            resulttext.innerHTML = ''
+            footprinttext.innerHTML = ''
+            var link1 = document.createElement("a");
+            link1.href = "https://www.carbonfootprint.com/energyconsumption.html"; link1.innerHTML = "Namų prietaisų Co2 pėdsako lentelė <br>"
+            var link2 = document.createElement("a");
+            link2.href = "https://skoot.eco/articles/carbon-footprint-of-everyday-things"; link2.innerHTML = "Kasdienybės Co2 pėdskas, straipsnis <br>"
+            var link3 = document.createElement("a");
+            link3.href = "https://createfashionbrand.com/carbon-footprint/"; link3.innerHTML = "Tekstilės Co2 pėdskas, straipsnis <br>"
+            var link4 = document.createElement("a");
+            link4.href = "https://www.worldometers.info/co2-emissions/co2-emissions-by-country/"; link4.innerHTML = "Planetos Co2 emisijų statistika <br>"
+            sourceDiv.appendChild(link1);
+            sourceDiv.appendChild(link2);
+            sourceDiv.appendChild(link3);
+            sourceDiv.appendChild(link4);
+        };
+
+        let reviewopen = false;
+        function openReview() {
+            const sourcesDiv = document.getElementById('review');
+            while(sourcesDiv.firstChild) { 
+                sourcesDiv.removeChild(sourcesDiv.firstChild); 
+            }
+            const resultheading = document.getElementById("resultheading");
+            const resulttext = document.getElementById('results');
+            const footprinttext = document.getElementById('footprint');
+            const reviewDiv = document.getElementById('review');
+            resultheading.innerHTML = "Apžvalga ir rekomendacijos"
+            resulttext.innerHTML = ''
+            footprinttext.innerHTML = ''
+            var goodlist = [];
+            var badlist = [];
+            console.log(questionresults)
+            const threshold = [0, 25, 1700, 170, 1200, 0, 2100, 150];
+            const questionResultsEntries = Object.entries(questionresults);
+
+            for (let i = 0; i < questionResultsEntries.length; i++) {
+              const [key, value] = questionResultsEntries[i];
+              if (value <= threshold[i]) {
+                goodlist.push(key-1);
+              } else if (value > threshold[0]) {
+                badlist.push(key-1);
+              }
+            }
+
+            console.log(goodlist)
+            console.log(badlist)
+            var badresopnse = ["","Jūs automobiliu važinėjate per daug. Rekomenduojame naudotis viešuoju transportu.","Jūs valgote per daug gyvūlinių produktų. Rekomenduojame valgyti daugiau augalinės kilmės produktų ar valgyti tvariai užaugintą mėsą.","Važiavimas automobiliu išmeta daugiau co2, nei skridimas lėktuvu, bei kiti pasirinkimai.","Vaisių ir daržovių transportavimas išmeta daug co2. Rekomenduojame valgyti lokalius vaisius, bei daržoves.","","Šildimas dujomis išmeta labai daug co2 į atmosferą. Rekomenduojame pakeisti šildymo būdą, jei taip įmanoma.","Jūsų drabužių pirkimas išmeta daug co2 į atmosferą. Rekomenduojame pirkti mažiau rūbų ar pirkti patvaresnius rūbus, kurie atitarnautų ilgiau.",""]
+            var goodresponse = ["","Jūs atomobiliu važinėjate ne per daug.","Jūs išlaikote puikią dietą ir neišmetate per daug co2","Jūs puikiai keliaujate per daug nekenkdami gamtai.","Jūs nekenkiate gamtai valgydami vaisius ar daržoves iš tolimų šalių.","","","Jūs tausojate gamtą nepirkdami daug drabužių.",""]
+
+            badlist.forEach((index) => {
+                console.log(badresopnse[index])
+                if (badresopnse[index-1]!='') { 
+                const r = document.createElement('h3');
+                r.innerHTML=`<i class="fa-solid fa-exclamation fa-2xl" id='bad'></i>`+badresopnse[index]+'<br>';
+                r.style.color='#a83116'
+                reviewDiv.appendChild(r);
+                }
+            });
+            goodlist.forEach((index) => {
+                console.log(goodresponse[index-1])
+                if (goodresponse[index]!='') { 
+                const r = document.createElement('h3');
+                r.innerHTML=`<i class="fa-solid fa-check fa-2xl" id='good'></i>`+goodresponse[index]+'<br>';
+                r.style.color='#649635';
+                reviewDiv.appendChild(r);
+                }
+            });
+        }
+
+        const sourcesbutton = document.getElementById('sources')
+        sourcesbutton.addEventListener('click', () => {
+            if (!sourceopen){
+                showSources();
+                sourceopen = true;
+            } else{
+                showResults();
+                sourceopen = false;
+            }})
+
+        const reviewbutton = document.getElementById('rewiev')
+        reviewbutton.addEventListener('click', () => {
+            if (!reviewopen){
+                openReview();
+                reviewopen = true;
+            } else{
+                showResults();
+                reviewopen = false;
+            }})
     });
 
     function updateSliderValue(slider, slidervalue) {
@@ -211,59 +316,86 @@
     <h1 id="caption">Anglies Pėdsako Skaičiuoklė</h1>
     <div id="questionnaire">
         <div class="question" id="question1">
-            <h3>Kiek kartų per savaitę naudojate automobilį?</h3>
-            <input id="q1-slider" type="range" min="0" max="20" value="50" data-mult="1">
-            <label id="rangeIndicator1" class="rangeIndicator">0</label><br>
-            <button id="nextButton1">Toliau</button><br>
+            <h3>Atsakydami šią apklausą jūs sužinosite savo co2 pėdsaką, bei gausite rekomendacijų kaip jį sumažinti.</h3>
+            <button id="nextButton1">Pradėti</button>
         </div>
         <div class="question" id="question2">
-            <h3>Kiek dažnai vartojate mėsą arba pieno produktus (Kaip pagrindinį patiekalą)?</h3>
-            <input type="radio" name="meatDairyConsumption" value="3600"> Kasdien kelis kartus<br>
-            <input type="radio" name="meatDairyConsumption" value="1800"> Kasdien<br>
-            <input type="radio" name="meatDairyConsumption" value="800"> Keletą kartų per savaitę<br>
+            <h3>Kiek kartų per savaitę naudojate automobilį?</h3>
+            <input id="q1-slider" name="2" type="range" min="0" max="20" value="50" data-mult="2">
+            <label id="rangeIndicator1" class="rangeIndicator">0</label><br>
             <button id="nextButton2">Toliau</button><br>
         </div>
         <div class="question" id="question3">
-            <h3>Kokiu būdu keliaujate ilgus atstumus (500 km)?</h3>
-            <input type="radio" name="travelChoice" value="90"> Automobilis<br>
-            <input type="radio" name="travelChoice" value="75"> Lėktuvas<br>
-            <input type="radio" name="travelChoice" value="50"> Autobusas<br>
-            <input type="radio" name="travelChoice" value="20"> Traukinys<br>
+            <h3>Kiek dažnai vartojate mėsą arba pieno produktus (Kaip pagrindinį patiekalą)?</h3>
+            <input type="radio" name="3" value="3200"> Kasdien kelis kartus<br>
+            <input type="radio" name="3" value="1600"> Kasdien<br>
+            <input type="radio" name="3" value="800"> Keletą kartų per savaitę<br>
             <button id="nextButton3">Toliau</button><br>
         </div>
         <div class="question" id="question4">
-            <h3>Kiek kartų per savaitę valgote vaisių ar daržovių iš tolimų šalių?</h3>
-            <input type="radio" name="importedFoodConsumption" value="3000"> Kasdien<br>
-            <input type="radio" name="importedFoodConsumption" value="1200"> Keletą kartų per savaitę<br>
-            <input type="radio" name="importedFoodConsumption" value="400"> Retkarčiais ar niekada<br>
+            <h3>Kokiu būdu keliaujate ilgus atstumus (1000 km)?</h3>
+            <input type="radio" name="4" value="180"> Automobilis<br>
+            <input type="radio" name="4" value="150"> Lėktuvas<br>
+            <input type="radio" name="4" value="75"> Autobusas<br>
+            <input type="radio" name="4" value="50">Laivas<br>
+            <input type="radio" name="4" value="40"> Traukinys<br>
             <button id="nextButton4">Toliau</button><br>
         </div>
         <div class="question" id="question5">
-            <h3>Kokie buities įrenginiai yra pas jus namie?</h3><br>
-            <input type="checkbox" value="40">Mikrobangų krosnelė<br>
-            <input type="checkbox" value="50">Skalbimo mašina<br>
-            <input type="checkbox" value="160">Džiovinimo mašina<br>
-            <input type="checkbox" value="70">Virdulys<br>
-            <input type="checkbox" value="60">Orkaitė<br>
-            <input type="checkbox" value="110">Kaitlentė<br>
-            <input type="checkbox" value="85">Indaplovė<br>
-            <input type="checkbox" value="120">Šaldytuvas<br>
+            <h3>Kiek kartų per savaitę valgote vaisių ar daržovių iš tolimų šalių?</h3>
+            <input type="radio" name="5" value="2800"> Kasdien<br>
+            <input type="radio" name="5" value="1200"> Keletą kartų per savaitę<br>
+            <input type="radio" name="5" value="400"> Retkarčiais ar niekada<br>
             <button id="nextButton5">Toliau</button><br>
         </div>
-        
         <div class="question" id="question6">
-            <h3>Kokiu būdu šildote namus?</h3>
-            <input type="radio" name="homeHeating" value="1200"> Centrinis šildymas<br>
-            <input type="radio" name="homeHeating" value="1000"> Durpės ar mediena<br>
-            <input type="radio" name="homeHeating" value="3500"> Dujos<br>
-            <input type="radio" name="homeHeating" value="2700"> Elektra<br>
+            <h3>Kokie buities įrenginiai yra pas jus namie?</h3><br>
+            <input type="checkbox" name="6" value="40">Mikrobangų krosnelė<br>
+            <input type="checkbox" name="6" value="50">Skalbimo mašina<br>
+            <input type="checkbox" name="6" value="160">Džiovinimo mašina<br>
+            <input type="checkbox" name="6" value="70">Virdulys<br>
+            <input type="checkbox" name="6" value="60">Orkaitė<br>
+            <input type="checkbox" name="6" value="110">Kaitlentė<br>
+            <input type="checkbox" name="6" value="85">Indaplovė<br>
+            <input type="checkbox" name="6" value="120">Šaldytuvas<br>
             <button id="nextButton6">Toliau</button><br>
         </div>
+        
         <div class="question" id="question7">
-            <h3>Kiek per metus jūs perkate naujus rūbus?</h3>
-            <input type="range" id="q7-slider" min="0" max="20" name="clothes" value="50" data-mult="7">
-            <label id="rangeIndicator7" class="rangeIndicator">0</label><br>
+            <h3>Kokiu būdu šildote namus?</h3>
+            <input type="radio" name="7" value="1200"> Centrinis šildymas<br>
+            <input type="radio" name="7" value="1000"> Durpės ar mediena<br>
+            <input type="radio" name="7" value="3500"> Dujos<br>
+            <input type="radio" name="7" value="2000"> Elektra<br>
             <button id="nextButton7">Toliau</button><br>
+        </div>
+        <div class="question" id="question8">
+            <h3>Kiek per metus jūs perkate naujus rūbus?</h3>
+            <input type="range" id="q7-slider" min="0" max="40" name="8" value="50" data-mult="7">
+            <label id="rangeIndicator7" class="rangeIndicator">0</label><br>
+            <button id="nextButton8">Toliau</button><br>
+        </div>
+        <div class="question" id="question9">
+            <h3>Kurioje klasėje tu mokiniesi?</h3><p>(Palik šiuos langelius tuščius jei nori atsakyti šią apklausą anonimiškai.)</p>
+            <select id="classSelectNum">
+                <option>-</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+            </select>
+            <select id="classSelectLet">
+                <option>-</option>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+                <option>D</option>
+            </select><br>
+            <button id="nextButton9" class="endButton">Baigti</button><br>
         </div>
         
 
@@ -272,10 +404,12 @@
                 <span class="closeButton">&times;</span>
                 <h1 id="resultheading">Rezultatai</h2>
                 <div id="sourcediv"></div>
+                <div id="review"></div>
                 <div id="resultsContent">
                     <h2 id="results">Rezultatai</h2>
                     <h4 id="footprint">pėdsakas</h4>
-                    <i class="fa-solid fa-file fa-2xl" style="color: #649635;" id="sources"></i>
+                    <i class="fa-solid fa-file fa-2xl" id="sources"></i>
+                    <i class="fa-solid fa-circle-exclamation fa-2xl" id="rewiev"></i>
                 </div>
             </div>
         </div>
