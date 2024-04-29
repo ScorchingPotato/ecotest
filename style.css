@@ -106,6 +106,7 @@ input[type="slider"] {
     height: 40px;
     width: 100%;
     outline: #649635;
+    accent-color: #649635;
     border-radius: 6px;
     
 }
