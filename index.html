@@ -78,29 +78,13 @@
         }
 
         function nextQuestion() {
-            var isAnswered = false;
             currentQuestion++;
             if (currentQuestion < totalQuestions) {
-                const currentQuestionDiv = document.getElementById(`question${currentQuestion}`);
-                const radioButtons = currentQuestionDiv.querySelectorAll("input[type='radio']");
-                if (radioButtons.length === 0) {
-                    isAnswered = true;
-                } else {
-                    radioButtons.forEach((radioButton) => {
-                        if (radioButton.checked) {
-                            isAnswered = true;
-                        }
-                    });
-                }
-                if (isAnswered) {
-                    showQuestion(currentQuestion);
-                } else {
-                    alert("Please answer the question before moving on.");
-                }
+                showQuestion(currentQuestion);
             } else {
                 showResults();
             }
-        }
+        } 
 
         function showResults() {
             let totalscore = 0;
