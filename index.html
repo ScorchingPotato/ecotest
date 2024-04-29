@@ -121,7 +121,7 @@
             let response_color = "000000";
 
             if (submit===false) {
-                writeData(makeid(5),Class,totalscore)
+                writeData(makeid(5),Class,totalscore/1000)
                 submit = true;
             }
         
@@ -148,7 +148,7 @@
             const footprinttext = document.getElementById('footprint');
             resultheading.innerHTML = "Rezultatai"
             resulttext.innerHTML = response;
-            footprinttext.innerHTML = `~${totalscore} tonų anglies dioksido`
+            footprinttext.innerHTML = `~${totalscore/1000} tonų anglies dioksido`
             resulttext.style.color = response_color;
             footprinttext.style.color = response_color;
             modal.style.display = "block";
