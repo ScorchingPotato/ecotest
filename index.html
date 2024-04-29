@@ -238,12 +238,22 @@
 
             console.log(goodlist)
             console.log(badlist)
-            var badresopnse = ["","Jūs automobiliu važinėjate per daug. Rekomenduojame naudotis viešuoju transportu.","Jūs valgote per daug gyvūlinių produktų. Rekomenduojame valgyti daugiau augalinės kilmės produktų ar valgyti tvariai užaugintą mėsą.","Važiavimas automobiliu išmeta daugiau co2, nei skridimas lėktuvu, bei kiti pasirinkimai.","Vaisių ir daržovių transportavimas išmeta daug co2. Rekomenduojame valgyti lokalius vaisius, bei daržoves.","","Šildimas dujomis išmeta labai daug co2 į atmosferą. Rekomenduojame pakeisti šildymo būdą, jei taip įmanoma.","Jūsų drabužių pirkimas išmeta daug co2 į atmosferą. Rekomenduojame pirkti mažiau rūbų ar pirkti patvaresnius rūbus, kurie atitarnautų ilgiau.",""]
+            var badresopnse = [
+                "",
+            "Jūs automobiliu važinėjate per daug. Rekomenduojame naudotis viešuoju transportu.",
+            "Jūs valgote per daug gyvūlinių produktų. Rekomenduojame valgyti daugiau augalinės kilmės produktų ar valgyti tvariai užaugintą mėsą.",
+            "Važiavimas automobiliu išmeta daugiau co2, nei skridimas lėktuvu, bei kiti pasirinkimai.",
+            "Vaisių ir daržovių transportavimas išmeta daug co2. Rekomenduojame valgyti lokalius vaisius, bei daržoves.",
+            "",
+            "Šildymas dujomis išmeta labai daug co2 į atmosferą. Rekomenduojame pakeisti šildymo būdą, jei taip įmanoma.",
+            "Jūsų drabužių pirkimas išmeta daug co2 į atmosferą. Rekomenduojame pirkti mažiau rūbų ar pirkti patvaresnius rūbus, kurie atitarnautų ilgiau.",
+            ""
+        ]
             var goodresponse = ["","Jūs atomobiliu važinėjate ne per daug.","Jūs išlaikote puikią dietą ir neišmetate per daug co2","Jūs puikiai keliaujate per daug nekenkdami gamtai.","Jūs nekenkiate gamtai valgydami vaisius ar daržoves iš tolimų šalių.","","","Jūs tausojate gamtą nepirkdami daug drabužių.",""]
 
             badlist.forEach((index) => {
                 console.log(badresopnse[index])
-                if (badresopnse[index-1]!='') { 
+                if (badresopnse[index]!='') { 
                 const r = document.createElement('h3');
                 r.innerHTML=`<i class="fa-solid fa-exclamation fa-2xl" id='bad'></i>`+badresopnse[index]+'<br>';
                 r.style.color='#a83116'
@@ -251,7 +261,7 @@
                 }
             });
             goodlist.forEach((index) => {
-                console.log(goodresponse[index-1])
+                console.log(goodresponse[index])
                 if (goodresponse[index]!='') { 
                 const r = document.createElement('h3');
                 r.innerHTML=`<i class="fa-solid fa-check fa-2xl" id='good'></i>`+goodresponse[index]+'<br>';
