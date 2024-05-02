@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="lt">
+  <head>
+
+  </head>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"
+    import { getDatabase, ref, set, child, get, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js"
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCpnGUngrZB6OMU1Fyig7owONHWrTCHtk",
+      authDomain: "projektas-co2-pedsakas.firebaseapp.com",
+      databaseURL: "https://projektas-co2-pedsakas-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "projektas-co2-pedsakas",
+      storageBucket: "projektas-co2-pedsakas.appspot.com",
+      messagingSenderId: "927191635694",
+      appId: "1:927191635694:web:ad755fe58c4817132f85ff",
+      measurementId: "G-6KM350E27H"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase();
+
+
+    var DATA = {
+        "1A":0,
+        "1B":0,
+        "1C":0,
+        "1D":0,
+        "2A":0,
+        "2B":0,
+        "2C":0,
+        "2D":0,
+        "3A":0,
+        "3B":0,
+        "3C":0,
+        "3D":0,
+        "4A":0,
+        "4B":0,
+        "4C":0,
+        "4D":0,
+        "5A":0,
+        "5B":0,
+        "5C":0,
+        "5D":0,
+        "6A":0,
+        "6B":0,
+        "6C":0,
+        "6D":0,
+        "7A":0,
+        "7B":0,
+        "7C":0,
+        "7D":0,
+        "8A":0,
+        "8B":0,
+        "8C":0,
+        "8D":0,
+        "?": 0
+    }
+    var userNUM = {
+        "1A":0,
+        "1B":0,
+        "1C":0,
+        "1D":0,
+        "2A":0,
+        "2B":0,
+        "2C":0,
+        "2D":0,
+        "3A":0,
+        "3B":0,
+        "3C":0,
+        "3D":0,
+        "4A":0,
+        "4B":0,
+        "4C":0,
+        "4D":0,
+        "5A":0,
+        "5B":0,
+        "5C":0,
+        "5D":0,
+        "6A":0,
+        "6B":0,
+        "6C":0,
+        "6D":0,
+        "7A":0,
+        "7B":0,
+        "7C":0,
+        "7D":0,
+        "8A":0,
+        "8B":0,
+        "8C":0,
+        "8D":0,
+        "?": 0
+    }
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users`)).then((snapshot) => {
+    if (snapshot.exists()) {
+        for (let key in snapshot.val()) {
+            DATA[snapshot.val()[key].class]+=Number(snapshot.val()[key].emission);
+            userNUM[snapshot.val()[key].class]++;
+    }
+    } else {
+        console.log("No data available");
+    }
+    }).catch((error) => {
+    console.error(error);
+    });
+
+    function returnRes(Class) {
+        return [DATA[Class],userNUM[Class],DATA[Class]/userNUM[Class]]
+    }
+
+    
+    document.getElementById("click").addEventListener("click", () => {
+        let Class = "";
+        var selectElement = document.querySelector('#Num');
+        var selectedOptions = Array.from(selectElement.options).filter(option => option.selected);
+        selectedOptions.forEach(option => {
+            if(option.text!='-'){Class += option.text};
+        });
+        var selectElement = document.querySelector('#Let');
+        var selectedOptions = Array.from(selectElement.options).filter(option => option.selected);
+        selectedOptions.forEach(option => {
+            if(option.text!='-'){Class += option.text};
+        });
+        if(Class.length<2){Class='?'}
+        alert(`${returnRes(Class)[2]} Co2 tonos`);
+    });
+    
+
+  </script>
+  <style>
+    body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+p, h1, h2, h3 {
+    color: #333;
+}
+
+a {
+    color: #333;
+    size:24px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#caption {
+    margin:40px;
+    color:  #649635;
+    font-weight:bold;
+}
+
+.main {
+    background-color: #f2f2f2;
+    padding: 40px;
+    max-width: 800px;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.question {
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.question h3 {
+    margin-top: 0;
+    text-align: left;
+}
+
+input[type="radio"] {
+    margin-bottom: 20px;
+    accent-color: #649635;
+    flex-direction: column;
+    margin-bottom: 10px;
+    transform: scale(1.5);
+}
+
+input[type="check"] {
+    margin-bottom: 20px;
+    accent-color: #649635;
+    flex-direction: column;
+    margin-bottom: 10px;
+    transform: scale(2);
+}
+
+button {
+    background-color: #649635;
+    color: #fff;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #327836;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 40px;
+    border: 1px solid #888;
+    width: 60%;
+    text-align: center;
+}
+
+.closeButton {
+    color: #000;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+input[type="slider"] {
+    height: 40px;
+    width: 100%;
+    outline: #649635;
+    accent-color: #649635;
+    border-radius: 6px;
+    
+}
+
+.endButton {
+    font-size: 48;
+}
+
+select {
+    margin: 20px,10px,10px,20px;
+    font-size: 32px;
+}
+
+i:hover {
+    color: #327836;
+    cursor:pointer;
+}
+
+i{
+    color:#649635;
+    margin:20px;
+}
+#bad {
+    color:#a83116;
+}
+#good{
+    color:#649635;
+}
+
+.rangeIndicator {
+    margin-left: 48px;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.closeButton:hover,
+.closeButton:focus {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+h1 {
+    text-align: center;
+}
+  </style>
+  <body>
+    <div class="main">
+        <select id="Num">
+            <option>-</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+        </select>
+        <select id="Let">
+            <option>-</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+            <option>D</option>
+        </select><br>
+    <button id="click">CLICK</button>
+</div>
+    
+  </body>
